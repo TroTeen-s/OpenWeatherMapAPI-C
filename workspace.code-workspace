@@ -9,5 +9,11 @@
 		"configurations": [
 		
 		]
+	},
+	"settings": {
+		"files.associations": {
+			"json.h": "c",
+			"stdbool.h": "c"
+		}
 	}
 }
