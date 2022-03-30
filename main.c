@@ -8,9 +8,25 @@ bool CallBackAPI();
 
 int main(){
 
+	char buffer[1024];
     
+    FILE *fp;
     if(CallBackAPI()){
      
+    struct json_object *parsed_json;
+
+    struct json_object *name;
+	struct json_object *age;
+	struct json_object *friends;
+	struct json_object *friend;
+
+    fp = fopen("parsedData.json","r");
+	fread(buffer, 1024, 1, fp);
+	fclose(fp);
+
+    parsed_json = json_tokener_parse(buffer);
+
+    
 
 
     }
@@ -37,11 +53,13 @@ bool CallBackAPI(){
     headers = curl_slist_append(headers, "X-RapidAPI-Key: 1564dcd893mshf4a2056f73b2fccp13115bjsn4974baad00bd");
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
-     FILE * fp = fopen("parsedData.json", "w");
+    FILE * fp = fopen("parsedData.json", "w");
 
     curl_easy_setopt(hnd,  CURLOPT_WRITEDATA, fp);
 
     CURLcode ret = curl_easy_perform(hnd);
+
+    fclose(fp);
 
     // Lets check if file is empty
     // SEEK_END searches the last byte of the file.
