@@ -6,6 +6,7 @@
 
 bool CallBackAPI();
 
+
 int main(){
 
 	char buffer[1024];
@@ -13,30 +14,28 @@ int main(){
     FILE *fp;
     if(CallBackAPI()){
      
-    struct json_object *parsed_json;
+        struct json_object *obj, *array, *array_obj, *array_obj_name;
+        int arraylen, i;
+        char name[10] = {0};
+        static const char filename[] = "parsedData.json";
+        obj = json_object_from_file(filename);
+        array = json_object_object_get(obj, "weather");
 
-    struct json_object *name;
-	struct json_object *age;
-	struct json_object *friends;
-	struct json_object *friend;
+        arraylen = json_object_array_length(array);
 
-    fp = fopen("parsedData.json","r");
-	fread(buffer, 1024, 1, fp);
-	fclose(fp);
-
-    parsed_json = json_tokener_parse(buffer);
-
+        for (i = 0; i < arraylen; i++) {
+     
+        array_obj = json_object_array_get_idx(array, i);
+  
+        array_obj_name = json_object_object_get(array_obj, "main");
     
-
+        printf("main=%s\n", json_object_get_string(array_obj_name));
 
     }
+    
+    }
    
-
-
-
     return 0;
-
-
 
 }
 
@@ -71,6 +70,7 @@ bool CallBackAPI(){
         printf("file is empty\n");
         return false;
     }else{
+        printf("Insertion done\n");
         return true;
     }
 
