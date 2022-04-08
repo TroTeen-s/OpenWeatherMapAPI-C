@@ -1,1 +1,42 @@
-{"coord":{"lon":4.5833,"lat":45.75},"weather":[{"id":804,"main":"Clouds","description":"couvert","icon":"04n"}],"base":"stations","main":{"temp":3.8,"feels_like":2.08,"temp_min":3.61,"temp_max":5.04,"pressure":998,"humidity":93},"visibility":4751,"wind":{"speed":1.9,"deg":336,"gust":2.67},"clouds":{"all":91},"dt":1648769874,"sys":{"type":2,"id":2007821,"country":"FR","sunrise":1648790521,"sunset":1648836529},"timezone":7200,"id":2996943,"name":"Lyon","cod":200}
+{
+    "coord": {
+        "lon": 4.5833,
+        "lat": 45.75
+    },
+    "weather": [{
+        "id": 804,
+        "main": "Clouds",
+        "description": "couvert",
+        "icon": "04n"
+    }],
+    "base": "stations",
+    "main": {
+        "temp": 3.8,
+        "feels_like": 2.08,
+        "temp_min": 3.61,
+        "temp_max": 5.04,
+        "pressure": 998,
+        "humidity": 93
+    },
+    "visibility": 4751,
+    "wind": {
+        "speed": 1.9,
+        "deg": 336,
+        "gust": 2.67
+    },
+    "clouds": {
+        "all": 91
+    },
+    "dt": 1648769874,
+    "sys": {
+        "type": 2,
+        "id": 2007821,
+        "country": "FR",
+        "sunrise": 1648790521,
+        "sunset": 1648836529
+    },
+    "timezone": 7200,
+    "id": 2996943,
+    "name": "Lyon",
+    "cod": 200
+}

@@ -4,28 +4,21 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
+#include <mysql/mysql.h>
 
 #define MAX 100
 
 bool CallBackAPI(const char *City, const char *Format);
 const char Configuration();
 void json_parse();
+void FetchDATA(struct json_object *city);
 
 
 int main(){
-
-	char buffer[1024];
-    json_parse();
     
-    FILE *fp;
+    Configuration();
    
     return 0;
-
-}
-
-void json_parse() {
-
-    Configuration();
 
 }
 
@@ -52,18 +45,91 @@ const char Configuration(){
 //   printf("Id : %s\n",Format);
 
     if(CallBackAPI(City, Format)){
-     
-        struct json_object *obj, *array, *array_obj, *array_obj_name;
-        int arraylen, i;
-        char name[10] = {0};
-        static const char filename[] = "parsedData.json";
-        obj = json_object_from_file(filename);
-        array = json_object_object_get(obj, "main");
 
-    
+        
+
+        FILE *fp = NULL;
+
+        fp = fopen("DataFETCH.json","w+");
+        fclose(fp);
+
+        FetchDATA(obj_City);
+
     }
 
+}
 
+void FetchDATA(struct json_object *city){
+
+
+      FILE *fp = NULL;
+
+    struct json_object *obj,*obj_second, *array, *array_obj, *array_second, *array_three;
+    struct json_object *main_temp,*main_feels_like,*main_temp_min,*main_temp_max,*main_pressure,*main_humidity;
+    struct json_object *localisation,
+                        *weather_description,
+                        *wind_speed,
+                        *city_data;
+    int arraylengh, i;
+    const char * stock[10];
+    static const char filename[] = "Data.json";
+
+
+    obj = json_object_from_file(filename);
+    array = json_object_object_get(obj, "main");
+    json_object *new_obj = json_tokener_parse(json_object_get_string(array));
+
+        main_temp = json_object_object_get(new_obj,"temp");
+        main_feels_like = json_object_object_get(new_obj,"feels_like");
+        main_temp_min = json_object_object_get(new_obj, "temp_min");
+        main_temp_max = json_object_object_get(new_obj,"temp_max");
+        main_pressure = json_object_object_get(new_obj,"pressure");
+        main_humidity = json_object_object_get(new_obj,"humidity");
+
+        printf("TEMP :%s\n",json_object_get_string(main_temp));
+
+
+    obj_second = json_object_from_file(filename);
+    array_second = json_object_object_get(obj_second, "wind");
+    json_object *new_obj_second = json_tokener_parse(json_object_get_string(array_second));
+
+        wind_speed = json_object_object_get(new_obj_second,"speed");
+        printf("WIND : %s\n",json_object_get_string(wind_speed));
+
+
+    array_three = json_object_object_get(obj, "weather");
+    json_object *new_obj_three = json_tokener_parse(json_object_get_string(array_three));
+
+        weather_description = json_object_object_get(new_obj_three,"description");
+        printf("CITY : %s\n",json_object_get_string(city));
+
+
+        /////////////////////////////
+
+            // INSERT TO BDD
+
+        /////////////////////////////
+
+
+    MYSQL * mysql;
+    MYSQL_RES * result = NULL;
+    MYSQL_ROW row;
+
+    char * Server = "51.254.117.247";
+    char * Utilisateur = "esgi"; // yuki
+    char * MotDePasse = "aulyma"; // azerty
+    char * BaseDeDonnee = "EZ_TROT"; // projet
+    char requete[300];
+
+   mysql = mysql_init(NULL);
+
+ /*Connexion a la base de donnée*/
+
+    if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 3306, NULL, 0)) {
+        printf("Connexion error : %s", mysql_error(mysql));
+    } else {
+        puts("noooo");
+    }
 
 }
 

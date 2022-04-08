@@ -1,6 +1,8 @@
 {
     "configuration": {
-        "city": "lyon",
-        "format": "JSON"
+        "city": "herblay",
+        "format": "json",
+        "units":"metric",
+        "language":"fr"
     }
 }
