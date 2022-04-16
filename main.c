@@ -56,6 +56,7 @@ const char Configuration(){
         FetchDATA(obj_City);
 
     }
+    
 
 }
 
@@ -64,12 +65,13 @@ void FetchDATA(struct json_object *city){
 
       FILE *fp = NULL;
 
-    struct json_object *obj,*obj_second, *array, *array_obj, *array_second, *array_three;
+    struct json_object *obj,*obj_second, *array, *array_obj, *array_second, *array_three, *array_four;
     struct json_object *main_temp,*main_feels_like,*main_temp_min,*main_temp_max,*main_pressure,*main_humidity;
     struct json_object *localisation,
                         *weather_description,
                         *wind_speed,
-                        *city_data;
+                        *city_data,
+                        *country_data;
     int arraylengh, i;
     const char * stock[10];
     static const char filename[] = "Data.json";
@@ -101,7 +103,28 @@ void FetchDATA(struct json_object *city){
     json_object *new_obj_three = json_tokener_parse(json_object_get_string(array_three));
 
         weather_description = json_object_object_get(new_obj_three,"description");
-        printf("CITY : %s\n",json_object_get_string(city));
+        printf("CITY : %s\n",json_object_get_string(weather_description));
+
+    array_four = json_object_object_get(obj, "sys");
+    json_object *new_obj_four = json_tokener_parse(json_object_get_string(array_four));
+
+
+        country_data = json_object_object_get(new_obj_four,"country");
+        printf("Country : %s\n",json_object_get_string(country_data));
+
+
+        const char *City = json_object_get_string(city);
+        const char *Country = json_object_get_string(country_data);
+        const char *temp_min = json_object_get_string(main_temp_min);
+        const char *temp_max = json_object_get_string(main_temp_max);
+        const char *temp = json_object_get_string(main_temp);
+        const char *feels_like = json_object_get_string(main_feels_like);
+        const char *description = json_object_get_string(weather_description);
+        const char *wind = json_object_get_string(wind_speed);
+        const char *pressure = json_object_get_string(main_pressure);
+        const char *humidity = json_object_get_string(main_humidity);
+
+
 
 
         /////////////////////////////
@@ -116,19 +139,27 @@ void FetchDATA(struct json_object *city){
     MYSQL_ROW row;
 
     char * Server = "51.254.117.247";
-    char * Utilisateur = "esgi"; // yuki
-    char * MotDePasse = "aulyma"; // azerty
+    char * Utilisateur = "matthias"; // yuki
+    char * MotDePasse = "matthias"; // azerty
     char * BaseDeDonnee = "EZ_TROT"; // projet
     char requete[300];
 
    mysql = mysql_init(NULL);
+
+   if (mysql == NULL) {
+        printf("Error %u %s\n", mysql_errno(mysql), mysql_error(mysql));
+        exit(1);
+    }
 
  /*Connexion a la base de donnée*/
 
     if (!mysql_real_connect(mysql, Server, Utilisateur, MotDePasse, BaseDeDonnee, 3306, NULL, 0)) {
         printf("Connexion error : %s", mysql_error(mysql));
     } else {
-        puts("noooo");
+         sprintf(requete, "insert into weather(description,temp,feels_like,temp_min,temp_max,pressure,humidity,city,country) Values('%s','%s','%s','%s','%s','%s','%s','%s','%s');", 
+         description, temp, feels_like,temp_min,temp_max,pressure,humidity,City,Country );
+        mysql_query(mysql, requete);
+        mysql_close(mysql);    
     }
 
 }
