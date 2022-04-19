@@ -1,1 +1,42 @@
-{"coord":{"lon":2.1667,"lat":49},"weather":[{"id":801,"main":"Clouds","description":"peu nuageux","icon":"02d"}],"base":"stations","main":{"temp":20.42,"feels_like":19.93,"temp_min":19.23,"temp_max":21.99,"pressure":1025,"humidity":54},"visibility":10000,"wind":{"speed":3.6,"deg":360},"clouds":{"all":20},"dt":1650033511,"sys":{"type":1,"id":6547,"country":"FR","sunrise":1649998821,"sunset":1650048121},"timezone":7200,"id":6612924,"name":"Herblay-sur-Seine","cod":200}
+{
+    "coord": {
+        "lon": 4.5833,
+        "lat": 45.75
+    },
+    "weather": [{
+        "id": 803,
+        "main": "Clouds",
+        "description": "nuageux",
+        "icon": "04d"
+    }],
+    "base": "stations",
+    "main": {
+        "temp": 16.55,
+        "feels_like": 15.25,
+        "temp_min": 16.38,
+        "temp_max": 17.75,
+        "pressure": 1008,
+        "humidity": 38
+    },
+    "visibility": 10000,
+    "wind": {
+        "speed": 1.79,
+        "deg": 74,
+        "gust": 4.47
+    },
+    "clouds": {
+        "all": 61
+    },
+    "dt": 1650388943,
+    "sys": {
+        "type": 2,
+        "id": 2007821,
+        "country": "FR",
+        "sunrise": 1650343737,
+        "sunset": 1650393137
+    },
+    "timezone": 7200,
+    "id": 2996943,
+    "name": "Lyon",
+    "cod": 200
+}

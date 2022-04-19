@@ -99,11 +99,22 @@ void FetchDATA(struct json_object *city){
         printf("WIND : %s\n",json_object_get_string(wind_speed));
 
 
+
+
     array_three = json_object_object_get(obj, "weather");
     json_object *new_obj_three = json_tokener_parse(json_object_get_string(array_three));
 
-        weather_description = json_object_object_get(new_obj_three,"description");
-        printf("CITY : %s\n",json_object_get_string(weather_description));
+    arraylengh = json_object_array_length(array_three);
+
+    for(i=0;i < arraylengh; i++){
+
+        array_obj = json_object_array_get_idx(array_three, i);
+        weather_description = json_object_object_get(array_obj, "description");
+        printf("Description : %s\n",json_object_get_string(weather_description));
+
+    }
+
+
 
     array_four = json_object_object_get(obj, "sys");
     json_object *new_obj_four = json_tokener_parse(json_object_get_string(array_four));
@@ -111,6 +122,7 @@ void FetchDATA(struct json_object *city){
 
         country_data = json_object_object_get(new_obj_four,"country");
         printf("Country : %s\n",json_object_get_string(country_data));
+        printf("City : %s\n",json_object_get_string(city));
 
 
         const char *City = json_object_get_string(city);
@@ -133,14 +145,13 @@ void FetchDATA(struct json_object *city){
 
         /////////////////////////////
 
-
     MYSQL * mysql;
     MYSQL_RES * result = NULL;
     MYSQL_ROW row;
 
     char * Server = "51.254.117.247";
     char * Utilisateur = "matthias"; // yuki
-    char * MotDePasse = "matthias"; // azerty
+    char * MotDePasse = "aulyma"; // azerty
     char * BaseDeDonnee = "EZ_TROT"; // projet
     char requete[300];
 
