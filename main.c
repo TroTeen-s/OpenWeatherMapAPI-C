@@ -153,7 +153,7 @@ void FetchDATA(struct json_object *city){
     char * Utilisateur = "matthias"; // yuki
     char * MotDePasse = "aulyma"; // azerty
     char * BaseDeDonnee = "EZ_TROT"; // projet
-    char requete[300];
+    char * requete = malloc(256);
 
    mysql = mysql_init(NULL);
 
@@ -173,6 +173,8 @@ void FetchDATA(struct json_object *city){
         mysql_close(mysql);    
     }
 
+    free(requete);
+
 }
 
 bool CallBackAPI(const char *City, const char *Format){
@@ -186,8 +188,8 @@ bool CallBackAPI(const char *City, const char *Format){
     printf("City : %s\n",City);
     printf("Format : %s\n",Format);
 
-    const char* str1 = "https://community-open-weather-map.p.rapidapi.com/weather?q=";
-    const char* str2 = "%2Cfr&lat=0&lon=0&id=2172797&lang=fr&units=metric&mode=";
+    const char* str1 = "https://api.openweathermap.org/data/2.5/weather?q=";
+    const char* str2 = "&appid=dcdf6042d6b1009056865694d9f97846&units=";
 
     strcat(strcpy(buf, str1), City);
     strcat(strcpy(buffer, str2), Format);
@@ -200,7 +202,7 @@ bool CallBackAPI(const char *City, const char *Format){
 
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "X-RapidAPI-Host: community-open-weather-map.p.rapidapi.com");
-    headers = curl_slist_append(headers, "X-RapidAPI-Key: 1564dcd893mshf4a2056f73b2fccp13115bjsn4974baad00bd");
+    headers = curl_slist_append(headers, "X-RapidAPI-Key: 78e15249d6msh858cd33e9190590p19343ajsna3745a5e29cb");
     curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
       const char* str3 = "Data.";
