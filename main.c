@@ -12,6 +12,7 @@ bool CallBackAPI(const char *City, const char *Format, const char *Language, con
 const char Configuration();
 void json_parse();
 void FetchDATA(struct json_object *city);
+char *concatenate(const char *a, const char *b, const char *c);
 
 
 int main(){
@@ -140,10 +141,7 @@ void FetchDATA(struct json_object *city){
 
 
 
-
-        /////////////////////////////
-
-            // INSERT TO BDD
+// INSERT TO BDD
 
         /////////////////////////////
 
@@ -173,10 +171,25 @@ void FetchDATA(struct json_object *city){
          description, temp, feels_like,temp_min,temp_max,pressure,humidity,City,Country );
         mysql_query(mysql, requete);
         mysql_close(mysql);    
+        puts("insertion SQL DONE");
     }
 
     free(requete);
 
+}
+
+
+char *concatenate(const char *a, const char *b, const char *c) {
+    size_t CharOne = strlen(a);
+    size_t CharTwo = strlen(b);
+    size_t CharThree = strlen(c);
+    char *res = malloc(CharOne + CharTwo + CharThree + 1);
+    if (res) {
+        memcpy(res, a, CharOne);
+        memcpy(res + CharOne, b, CharTwo);
+        memcpy(res + CharOne + CharTwo, c, CharThree + 1);
+    }
+    return res;
 }
 
 bool CallBackAPI(const char *City, const char *Format, const char *Language, const char *Units){
@@ -202,13 +215,10 @@ bool CallBackAPI(const char *City, const char *Format, const char *Language, con
     strcat(strcpy(buffer_language, str2), Language);
     strcat(strcpy(buffer_units,str3), Units);
 
-    
-    strcat(strcpy(bu,buf), buffer_language);
-    strcat(strcpy(bu2,bu), buffer_units);
+    const char *result = concatenate(buf,buffer_language,buffer_units);
+    printf("%s\n",result);
 
-    printf("%s\n", bu2);
-
-    curl_easy_setopt(hnd, CURLOPT_URL, bu2);
+    curl_easy_setopt(hnd, CURLOPT_URL, result);
 
       const char* str4 = "Data.";
 
