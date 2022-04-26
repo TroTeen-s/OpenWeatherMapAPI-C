@@ -1,8 +1,8 @@
 {
     "configuration": {
-        "city": "lyon",
+        "city": "Lyon",
         "format": "json",
         "units":"metric",
-        "language":"fr"
+        "language":"FR"
     }
 }

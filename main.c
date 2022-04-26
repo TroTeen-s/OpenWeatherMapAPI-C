@@ -8,7 +8,7 @@
 
 #define MAX 100
 
-bool CallBackAPI(const char *City, const char *Format);
+bool CallBackAPI(const char *City, const char *Format, const char *Language, const char *Units);
 const char Configuration();
 void json_parse();
 void FetchDATA(struct json_object *city);
@@ -26,7 +26,7 @@ const char Configuration(){
 
     FILE *fp;
     
-    struct json_object *obj, *array, *array_obj, *obj_City, *obj_format;
+    struct json_object *obj, *array, *array_obj, *obj_City, *obj_units, *obj_language, *obj_format;
     int arraylengh, i;
     const char * stock[10];
     static const char filename[] = "Configuration.json";
@@ -36,17 +36,19 @@ const char Configuration(){
     json_object *new_obj = json_tokener_parse(json_object_get_string(array));
 
     obj_City = json_object_object_get(new_obj,"city");
-    obj_format = json_object_object_get(new_obj,"format");
+    obj_units = json_object_object_get(new_obj,"units");
+    obj_language = json_object_object_get(new_obj,"language");
+    obj_format = json_object_object_get(new_obj, "format");
 
   const char *City = json_object_get_string(obj_City);
+  const char *Units = json_object_get_string(obj_units);
+  const char *Language = json_object_get_string(obj_language);
   const char *Format = json_object_get_string(obj_format);
 
 //   printf("Name : %s\n",City);
 //   printf("Id : %s\n",Format);
 
-    if(CallBackAPI(City, Format)){
-
-        
+    if(CallBackAPI(City, Format, Language, Units)){
 
         FILE *fp = NULL;
 
@@ -177,37 +179,40 @@ void FetchDATA(struct json_object *city){
 
 }
 
-bool CallBackAPI(const char *City, const char *Format){
+bool CallBackAPI(const char *City, const char *Format, const char *Language, const char *Units){
 
     CURL *hnd = curl_easy_init();
     char buf[MAX];
-    char buffer[MAX];
-    char buffer_final[MAX];
+    char buffer_units[MAX];
+    char buffer_language[MAX];
     char buffer_format[MAX];
 
-    printf("City : %s\n",City);
-    printf("Format : %s\n",Format);
+    char bu[MAX];
+    char bu2[MAX];
 
-    const char* str1 = "https://api.openweathermap.org/data/2.5/weather?q=";
-    const char* str2 = "&appid=dcdf6042d6b1009056865694d9f97846&units=";
+
+    printf("City : %s\n",City);
+    printf("Format : %s\n",Units);
+
+    const char* str1 = "http://api.openweathermap.org/data/2.5/weather?q=";
+    const char* str2 = "&APPID=dcdf6042d6b1009056865694d9f97846&lang=";
+    const char* str3 = "&units=";
 
     strcat(strcpy(buf, str1), City);
-    strcat(strcpy(buffer, str2), Format);
-    strcat(strcpy(buffer_final, buf), buffer);
+    strcat(strcpy(buffer_language, str2), Language);
+    strcat(strcpy(buffer_units,str3), Units);
 
-      printf("%s\n", buffer_final);
+    
+    strcat(strcpy(bu,buf), buffer_language);
+    strcat(strcpy(bu2,bu), buffer_units);
 
-    curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
-    curl_easy_setopt(hnd, CURLOPT_URL, buffer_final);
+    printf("%s\n", bu2);
 
-    struct curl_slist *headers = NULL;
-    headers = curl_slist_append(headers, "X-RapidAPI-Host: community-open-weather-map.p.rapidapi.com");
-    headers = curl_slist_append(headers, "X-RapidAPI-Key: 78e15249d6msh858cd33e9190590p19343ajsna3745a5e29cb");
-    curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
+    curl_easy_setopt(hnd, CURLOPT_URL, bu2);
 
-      const char* str3 = "Data.";
+      const char* str4 = "Data.";
 
-    strcat(strcpy(buffer_format, str3), Format);
+    strcat(strcpy(buffer_format, str4), Format);
 
     FILE * fp = fopen(buffer_format, "w");
 
